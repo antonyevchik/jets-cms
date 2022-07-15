@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.form-input {
+    border-color: #d1d5db;
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+}
+
+.form-input:focus {
+    border-color: #a5b4fc;
+    --tw-ring-color: #c7d2feff;
+    box-shadow: var(--tw-ring-inset) 0 0 0 calc(3px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+}
+
+.body-content {
+    max-height: 300px !important;
+    overflow-y: scroll;
+}
+
+.trix-button-group--history-tools {
+    display: none !important;
+}
+
+.error {
+    color: red;
+}
