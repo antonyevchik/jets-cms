@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Livewire\Frontpage;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -40,3 +41,6 @@ Route::group(['middleware' => [
         return view('admin.pages');
     })->name('pages');
 });
+
+Route::get('/{urlslug}', Frontpage::class);
+Route::get('/', Frontpage::class);

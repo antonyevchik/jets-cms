@@ -5,21 +5,40 @@ namespace App\Http\Livewire;
 use App\Models\Page;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Pages extends Component
 {
+    use WithPagination;
+
     public $modalFormVisible = false;
+    public $modalConfirmDeleteVisible = false;
+    public ?Page $pageModel = null;
     public $slug;
     public $title;
     public $content;
 
+    /**
+     * @return array
+     */
     public function rules()
     {
         return [
             'title' => 'required',
-            'slug'  => ['required', Rule::unique('pages', 'slug')],
+            'slug'  => ['required', Rule::unique('pages', 'slug')->ignore($this->pageModel->id)],
             'content'   => 'required',
         ];
+    }
+
+    /**
+     * The Livewire mount function
+     *
+     * @return void
+     */
+    public function mount()
+    {
+        //Resets the pagination after reloading page
+        $this->resetPage();
     }
 
     /**
@@ -49,13 +68,79 @@ class Pages extends Component
     }
 
     /**
+     * The read function.
+     *
+     * @return mixed
+     */
+    public function read()
+    {
+        return Page::paginate(5);
+    }
+
+    /**
+     * Update function.
+     *
+     * @return void
+     */
+    public function update()
+    {
+        $this->validate();
+        $this->pageModel->update($this->modelData());
+        $this->modalFormVisible = false;
+    }
+
+    /**
+     * Delete function.
+     *
+     * @return void
+     */
+    public function delete()
+    {
+        $this->pageModel->delete();
+        $this->modalConfirmDeleteVisible = false;
+        $this->resetPage();
+    }
+
+    /**
      * Show the form modal of the create function
      *
      * @return void
      */
     public function createShowModal()
     {
+        $this->resetValidation();
+        $this->resetVars();
         $this->modalFormVisible = true;
+    }
+
+    /**
+     * Shows the form modal in update mode.
+     *
+     * @param Page $page
+     * @return void
+     */
+    public function updateShowModal(Page $page)
+    {
+        $this->resetValidation();
+        $this->resetVars();
+        $this->pageModel = $page;
+        $this->modalFormVisible = true;
+
+        $this->title = $page->title;
+        $this->slug = $page->slug;
+        $this->content = $page->content;
+    }
+
+    /**
+     * Show delete confirmation modal.
+     *
+     * @param Page $page
+     * @return void
+     */
+    public function deleteShowModal(Page $page)
+    {
+        $this->pageModel = $page;
+        $this->modalConfirmDeleteVisible = true;
     }
 
     /**
@@ -80,6 +165,7 @@ class Pages extends Component
      */
     public function resetVars()
     {
+        $this->page = null;
         $this->title = null;
         $this->slug = null;
         $this->content = null;
@@ -106,6 +192,8 @@ class Pages extends Component
      */
     public function render()
     {
-        return view('livewire.pages');
+        return view('livewire.pages', [
+            'data' => $this->read(),
+        ]);
     }
 }
