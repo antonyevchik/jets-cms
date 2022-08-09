@@ -23,7 +23,11 @@
                             @if($data->count())
                                 @foreach($data as $item)
                                     <tr>
-                                        <td class="px-6 py-4 text-sm whitespace-nowrap">{{ $item->title }}</td>
+                                        <td class="px-6 py-4 text-sm whitespace-nowrap">
+                                            {{ $item->title }}
+                                            {!! $item->is_default_home ? '<span class="text-green-400 text-xs font-bold">[Default Home Page]</span>' : '' !!}
+                                            {!! $item->is_default_not_found ? '<span class="text-red-400 text-xs font-bold">[Default 404 Page]</span>' : '' !!}
+                                        </td>
                                         <td class="px-6 py-4 text-sm whitespace-nowrap">
                                             <a href="{{ URL::to('/'.$item->slug) }}"
                                                 target="_blank"
@@ -32,7 +36,7 @@
                                             </a>
                                         </td>
                                         <td class="px-6 py-4 text-sm whitespace-nowrap">{!! $item->content !!}</td>
-                                        <td class="px-6 py-4 text-right text-sm">
+                                        <td class="px-6 py-4 text-right text-sm space-x-2 space-y-2">
                                             <x-jet-button wire:click="updateShowModal({{ $item->id }})">
                                                 {{ __('Update') }}
                                             </x-jet-button>
@@ -78,6 +82,18 @@
                            placeholder="url-slug">
                 </div>
                 @error('slug') <span class="error">{{ $message }}</span> @enderror
+            </div>
+            <div class="mt-4">
+                <label>
+                    <input class="form-checkbox" type="checkbox" value="{{ $isSetToDefaultHomePage }}" wire:model="isSetToDefaultHomePage">
+                    <span class="ml-2 text-sm text-gray-600">Set as the default home page</span>
+                </label>
+            </div>
+            <div class="mt-4">
+                <label>
+                    <input class="form-checkbox" type="checkbox" value="{{ $isSetToDefaultNotFoundPage }}" wire:model="isSetToDefaultNotFoundPage">
+                    <span class="ml-2 text-sm text-red-600">Set as the 404 error page</span>
+                </label>
             </div>
             <div class="mt-4">
                 <x-jet-label for="content" value="{{ __('Content') }}" />
