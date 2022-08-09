@@ -16,9 +16,11 @@ class Frontpage extends Component
      * @param $urlslug
      * @return void
      */
-    public function mount($urlslug)
+    public function mount($urlslug = '')
     {
-        $this->retrieveContent($urlslug);
+        if ($urlslug) {
+            $this->retrieveContent($urlslug);
+        }
     }
 
     /**
