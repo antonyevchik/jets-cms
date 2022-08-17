@@ -27,7 +27,7 @@ class NavigationMenus extends Component
         return [
             'type'       => 'required',
             'label'      => 'required',
-            'slug'       => ['required', Rule::unique('navigation_menus', 'slug')->ignore($this->menuModel?->id)],
+            'slug'       => ['required'],
             'sequence'   => 'required',
         ];
     }
@@ -120,7 +120,7 @@ class NavigationMenus extends Component
     /**
      * Show delete confirmation modal.
      *
-     * @param Page $page
+     * @param NavigationMenu $menu
      * @return void
      */
     public function deleteShowModal(NavigationMenu $menu)
