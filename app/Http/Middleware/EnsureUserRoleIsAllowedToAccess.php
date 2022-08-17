@@ -31,8 +31,6 @@ class EnsureUserRoleIsAllowedToAccess
         } catch (\Throwable $throwable) {
             abort(403, 'Unauthorized action.');
         }
-
-
     }
 
     /**
@@ -49,6 +47,9 @@ class EnsureUserRoleIsAllowedToAccess
             'admin' => [
                 'pages',
                 'navigation-menus',
+                'dashboard',
+                'users',
+                'user-permissions',
             ]
         ];
     }

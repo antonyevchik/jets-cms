@@ -3,7 +3,6 @@
 namespace App\Http\Livewire;
 
 use App\Models\NavigationMenu;
-use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
 

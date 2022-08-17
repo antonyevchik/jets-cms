@@ -1,0 +1,39 @@
+<?php
+
+namespace App\Http\Livewire;
+
+use App\Model\{{}}
+use Livewire\Component;
+use Livewire\WithPagination;
+
+class {{}} extends Component
+{
+    public bool $modalFormVisible = false;
+    public bool $modalConfirmDeleteVisible = false;
+    public ?{{}} $Model = null;
+
+    /**
+     * The validation rules
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        return [
+
+        ];
+    }
+
+    /**
+     * The data for the model mapped
+     * in this component
+     *
+     * @return array
+     */
+    public function modelData()
+    {
+        return [
+
+        ];
+    }
+}
