@@ -31,7 +31,6 @@ class NavigationMenus extends Component
         ];
     }
 
-
     /**
      * @return void
      */
