@@ -2,17 +2,21 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\{{}};
+use App\Models\User;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class {{}} extends Component
+class Users extends Component
 {
     use WithPagination;
 
     public bool $modalFormVisible = false;
     public bool $modalConfirmDeleteVisible = false;
-    public ?{{}} $Model = null;
+    public ?User $Model = null;
+
+    public $name;
+    public $email;
+    public $role;
 
     /**
      * The validation rules
@@ -22,7 +26,9 @@ class {{}} extends Component
     public function rules()
     {
         return [
-
+            'name'  => 'required',
+            'email' => 'required',
+            'role'  => 'required',
         ];
     }
 
@@ -35,7 +41,9 @@ class {{}} extends Component
     public function modelData()
     {
         return [
-
+            'name'  => $this->name,
+            'email' => $this->email,
+            'role'  => $this->role,
         ];
     }
 
@@ -51,7 +59,7 @@ class {{}} extends Component
     public function create()
     {
         $this->validate();
-        {{}}::create($this->modelData());
+        User::create($this->modelData());
         $this->modalFormVisible = false;
         $this->reset();
     }
@@ -63,7 +71,7 @@ class {{}} extends Component
      */
     public function read()
     {
-        return {{}}::paginate(5);
+        return User::paginate(5);
     }
 
     /**
@@ -106,25 +114,29 @@ class {{}} extends Component
     /**
      * Shows the form modal in update mode.
      *
-     * @param {{}} $model
+     * @param User $model
      * @return void
      */
-    public function updateShowModal({{}} $model)
+    public function updateShowModal(User $model)
     {
         $this->resetValidation();
         $this->reset();
 
         $this->Model = $model;
         $this->modalFormVisible = true;
+
+        $this->name     = $model->name;
+        $this->email    = $model->email;
+        $this->role     = $model->role;
     }
 
     /**
      * Show delete confirmation modal.
      *
-     * @param {{}} $model
+     * @param User $model
      * @return void
      */
-    public function deleteShowModal({{}} $model)
+    public function deleteShowModal(User $model)
     {
         $this->Model = $model;
         $this->modalConfirmDeleteVisible = true;
@@ -132,8 +144,9 @@ class {{}} extends Component
 
     public function render()
     {
-        return view('livewire.{{}}', [
-            'data' => $this->read(),
+        return view('livewire.users', [
+            'data'  => $this->read(),
+            'roles' => User::userRoleList(),
         ]);
     }
 }

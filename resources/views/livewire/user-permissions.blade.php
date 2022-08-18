@@ -12,20 +12,18 @@
                 <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead>
-                        <tr>
-                            <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Column1</th>
-                            <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Column2</th>
-                            <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Column3</th>
-                            <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"></th>
-                        </tr>
+                            <tr>
+                                <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Role</th>
+                                <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Route Name</th>
+                                <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"></th>
+                            </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
                             @if($data->count())
                                 @foreach($data as $item)
                                     <tr>
-                                        <td class="px-6 py-4 text-sm whitespace-nowrap">{{ 'Record1' }}</td>
-                                        <td class="px-6 py-4 text-sm whitespace-nowrap">{{ 'Record2' }}</td>
-                                        <td class="px-6 py-4 text-sm whitespace-nowrap">{{ 'Record3' }}</td>
+                                        <td class="px-6 py-4 text-sm whitespace-nowrap">{{ $item->role }}</td>
+                                        <td class="px-6 py-4 text-sm whitespace-nowrap">{{ $item->route_name }}</td>
                                         <td class="px-6 py-4 text-right text-sm space-x-2 space-y-2">
                                             <x-jet-button wire:click="updateShowModal({{ $item->id }})">
                                                 {{ __('Update') }}
@@ -54,21 +52,29 @@
     {{--    Modal form     --}}
     <x-jet-dialog-modal wire:model="modalFormVisible">
         <x-slot name="title">
-            {{ __('Create or Update Form') }}
+            {{ __('Save User Permission') }}
         </x-slot>
 
         <x-slot name="content">
             <div class="mt-4">
-                <x-jet-label for="" value="{{ __('') }}" />
-                <x-jet-input id="" type="text" wire:model="" class="block mt-1 w-full"/>
-                @error('') <span class="error">{{ $message }}</span> @enderror
+                <x-jet-label for="role" value="{{ __('Role') }}" />
+                <select wire:model="role" id="role" class="block appearance-none w-full bg-gray-100 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                    <option value="">-- Select a Role --</option>
+                    @foreach($roles as $key => $role)
+                        <option value="{{ $key }}">{{ $role }}</option>
+                    @endforeach
+                </select>
+                @error('role') <span class="error">{{ $message }}</span> @enderror
             </div>
             <div class="mt-4">
-                <x-jet-label for="" value="{{ __('') }}" />
-                <select wire:model="" id="" class="block appearance-none w-full bg-gray-100 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                    <option value="">Option1</option>
-                    <option value="">Option2</option>
+                <x-jet-label for="routeName" value="{{ __('Route Name') }}" />
+                <select wire:model="routeName" id="routeName" class="block appearance-none w-full bg-gray-100 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                    <option value="">-- Select a Route --</option>
+                    @foreach($routeNames as $route)
+                        <option value="{{ $route }}">{{ $route }}</option>
+                    @endforeach
                 </select>
+                @error('routeName') <span class="error">{{ $message }}</span> @enderror
             </div>
         </x-slot>
 
@@ -91,11 +97,11 @@
     {{--    The Delete Modal    --}}
     <x-jet-dialog-modal wire:model="modalConfirmDeleteVisible">
         <x-slot name="title">
-            {{ __('Delete Modal Title') }}
+            {{ __('Delete Permission') }}
         </x-slot>
 
         <x-slot name="content">
-            {{ __('Are you sure you want to delete this item? .') }}
+            {{ __('Are you sure you want to delete this permission? .') }}
         </x-slot>
 
         <x-slot name="footer">
@@ -104,7 +110,7 @@
             </x-jet-secondary-button>
 
             <x-jet-danger-button class="ml-3" wire:click="delete" wire:loading.attr="disabled">
-                {{ __('Delete Item') }}
+                {{ __('Delete Permission') }}
             </x-jet-danger-button>
         </x-slot>
     </x-jet-dialog-modal>
