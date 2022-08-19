@@ -88,6 +88,11 @@ class Pages extends Component
         Page::create($this->modelData());
         $this->modalFormVisible = false;
         $this->reset();
+
+        $this->dispatchBrowserEvent('event-notification', [
+            'eventName' => 'New Page',
+            'eventMessage' => 'Another page has been created!',
+        ]);
     }
 
     /**
@@ -112,6 +117,11 @@ class Pages extends Component
         $this->unassignDefaultNotFoundPage();
         $this->pageModel->update($this->modelData());
         $this->modalFormVisible = false;
+
+        $this->dispatchBrowserEvent('event-notification', [
+            'eventName' => 'Update Page',
+            'eventMessage' => 'Page has been updated!',
+        ]);
     }
 
     /**
