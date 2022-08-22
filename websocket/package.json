@@ -12,6 +12,8 @@
   "license": "ISC",
   "dependencies": {
     "html-entities": "^2.3.3",
+    "mysql": "^2.18.1",
+    "uniqid": "^5.4.0",
     "websocket": "^1.0.34"
   }
 }

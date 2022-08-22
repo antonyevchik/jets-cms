@@ -12,6 +12,7 @@
 
         <!-- Styles -->
         <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+        <link rel="stylesheet" href="{{ 'css/chat.css' }}">
 
         @trixassets
 
@@ -42,6 +43,7 @@
 
                 </div>
                 {{ $slot }}
+                @livewire('chat-component')
             </main>
         </div>
 
@@ -49,20 +51,9 @@
 
         @livewireScripts
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="{{ url('/js/socket.js') }}"></script>
         <script>
-            /**
-             * Initialize a web socket client
-             *
-             * @param config
-             * @returns {WebSocket}
-             */
-            function clientSocket(config = {}) {
-                let route = config.route || "127.0.0.1";
-                let port = config.port || "3280";
-                window.Websocket = window.WebSocket || window.MozWebSocket;
 
-                return new WebSocket("ws://" + route + ":" + port);
-            }
 
             // Instantiate a connection
             let connection = clientSocket();
