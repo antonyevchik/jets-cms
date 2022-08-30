@@ -12,7 +12,6 @@
 
         <!-- Styles -->
         <link rel="stylesheet" href="{{ mix('css/app.css') }}">
-        <link rel="stylesheet" href="{{ 'css/chat.css' }}">
 
         @trixassets
 
@@ -51,9 +50,6 @@
 
         @livewireScripts
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <script src="{{ url('/js/socket.js') }}"></script>
-        <script>
-
 
             // Instantiate a connection
             let connection = clientSocket();
