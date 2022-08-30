@@ -50,58 +50,6 @@
 
         @livewireScripts
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
-            // Instantiate a connection
-            let connection = clientSocket();
-
-            /**
-             * The event listener that will be dispatched to the websocket server.
-             */
-            window.addEventListener('event-notification', event => {
-                connection.send(JSON.stringify({
-                    eventName: event.detail.eventName,
-                    eventMessage: event.detail.eventMessage
-                }));
-            })
-
-            /**
-             * When connection is open
-             */
-            connection.onopen = function () {
-                console.log("Connection is open!");
-            }
-
-            connection.onclose = function () {
-                console.log("Connection was closed!");
-                console.log("Reconnecting after 3 s...")
-                setTimeout(() => {
-                    window.location.reload();
-                }, 3000);
-            }
-
-            /**
-             * Will receive messages from the websocket server
-             *
-             * @param message
-             */
-            connection.onmessage = function (message) {
-                let result = JSON.parse(message.data);
-                let notificationMessage = `
-                    <h3>${result.eventName}</h3>
-                    <p>${result.eventMessage}</p>
-                `;
-
-                //Begin animation - Display message
-                $(".event-notification-box").html(notificationMessage);
-                $(".event-notification-box").removeClass("opacity-0");
-                $(".event-notification-box").addClass("opacity-100");
-
-                // Hide the message
-                setTimeout(() => {
-                    $(".event-notification-box").removeClass("opacity-100");
-                    $(".event-notification-box").addClass("opacity-0");
-                }, 3000);
-            }
-        </script>
+        @stack('chat-websocket')
     </body>
 </html>

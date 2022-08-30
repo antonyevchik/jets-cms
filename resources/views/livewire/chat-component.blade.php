@@ -5,6 +5,7 @@
     @if($this->chatPopupVisibility)
         <div class="chat-popup">
             <form class="form-container">
+                <div>Room #: {{ $roomId }}</div>
                 <label class="font-semibold"></label>
                 <div
                     id="messageBox"
@@ -24,4 +25,61 @@
             </form>
         </div>
     @endif
+    @push('chat-websocket')
+        <script>
+            $(function () {
+                /**
+                 *
+                 * @param elementId
+                 */
+                function keepChatboxFocusAtBottom(elementId) {
+                    let element = document.getElementById(elementId);
+                    element.scrollTop = element.scrollHeight;
+                }
+
+                function messageFormat(id, name, message) {
+                    let userId = "{{ auth()->user()->id }}";
+                    let color = id === userId ? "bg-blue-400" : "bg-green-400";
+                    let alignment = id === userId ? "text-right" : "text-left";
+
+                    return `
+                        <div class="grid grid-cols-1 items-center gap-0">
+                            <span class="${alignment} font-semibold text-sm">${name}</span>
+                            <span class="${alignment} ${color} text-sm text-white px-3 py-2 rounded">${message}</span>
+                        </div>
+                    `;
+                }
+
+                // Instantiate a connection
+                let chatConnection = clientSocket({ port: 3281 });
+
+                // The messageBox element
+                let messageBox = $("#messageBox");
+
+                // The message element
+                let message = $("#message");
+
+                /**
+                 * When a connection is open
+                 */
+                chatConnection.onopen = function () {
+                    console.log("Chat connection is open!");
+                }
+
+                /**
+                 * Will receive message from the websocket server
+                 */
+                chatConnection.onmessage = function (message) {
+
+                }
+
+                /**
+                 * Send the prompt to the websocket server
+                 */
+                window.addEventListener('chat-send-message', event => {
+                    console.log(event);
+                })
+            });
+        </script>
+    @endpush
 </div>

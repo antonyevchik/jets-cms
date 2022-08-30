@@ -59,11 +59,21 @@ class ChatComponent extends Component
      */
     public function sendMessage()
     {
+        $userId = auth()->user()->id;
+
         Message::create([
-            'room_id' => $this->roomId,
+            'room_id'   => $this->roomId,
+            'user_id'   => $userId,
+            'message'   => $this->message,
         ]);
 
         $this->message = "";
+
+        $this->dispatchBrowserEvent('chat-send-message', [
+            'room_id'   => $this->roomId,
+            'user_id'   => $userId,
+            'message'   => $this->message,
+        ]);
     }
 
     public function render()
