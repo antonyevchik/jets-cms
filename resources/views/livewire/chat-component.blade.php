@@ -8,6 +8,7 @@
                 <div>Room #: {{ $roomId }}</div>
                 <label class="font-semibold"></label>
                 <div
+                    wire:ignore
                     id="messageBox"
                     class="border px-3 py-2 h-64 bg-gray-50 overflow-y-auto"
                     style="width:280px">
@@ -39,13 +40,15 @@
 
                 function messageFormat(id, name, message) {
                     let userId = "{{ auth()->user()->id }}";
-                    let color = id === userId ? "bg-blue-400" : "bg-green-400";
-                    let alignment = id === userId ? "text-right" : "text-left";
+                    let color = id == userId ? "bg-blue-400" : "bg-green-400";
+                    let alignment = id == userId ? "text-right" : "text-left";
+
+                    console.log("userId: "+userId);
 
                     return `
-                        <div class="grid grid-cols-1 items-center gap-0">
+                        <div class="grid grid-cols-1 items-center my-3 gap-0">
                             <span class="${alignment} font-semibold text-sm">${name}</span>
-                            <span class="${alignment} ${color} text-sm text-white px-3 py-2 rounded">${message}</span>
+                            <span class="${alignment} ${color} text-sm text-white px-3 py-2 rounded-lg">${message}</span>
                         </div>
                     `;
                 }
@@ -78,7 +81,18 @@
                  * Will receive message from the websocket server
                  */
                 chatConnection.onmessage = function (message) {
+                    let result = JSON.parse(message.data);
+                    let chatMessage = result.data;
 
+                    if (result.type === "chatMessage") {
+                        messageBox.append(messageFormat(
+                            chatMessage.user_id,
+                            chatMessage.name,
+                            chatMessage.message
+                        ));
+                    }
+
+                    keepChatboxFocusAtBottom("messageBox");
                 }
 
                 /**
@@ -89,8 +103,15 @@
                     chatConnection.send(JSON.stringify({
                         type: "chatMessage",
                         date: event.detail
-                    }))
-                })
+                    }));
+                });
+
+                /**
+                 * Reload the page
+                 */
+                window.addEventListener('reload-page', event => {
+                    window.location.reload();
+                });
             });
         </script>
     @endpush

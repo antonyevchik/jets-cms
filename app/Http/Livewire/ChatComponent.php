@@ -39,6 +39,9 @@ class ChatComponent extends Component
     {
         Cookie::queue('chatPopupShow', 'true', 60);
         $this->chatPopupVisibility = true;
+
+        // load chat history by reloading the page
+        $this->dispatchBrowserEvent('reload-page');
     }
 
     /**
