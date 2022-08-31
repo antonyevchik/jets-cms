@@ -4,7 +4,7 @@
  * @param config
  * @returns {WebSocket}
  */
-function clientSocket(config = {}) {
+window.clientSocket = function(config = {}) {
     let route = config.route || "127.0.0.1";
     let port = config.port || "3280";
     window.Websocket = window.WebSocket || window.MozWebSocket;

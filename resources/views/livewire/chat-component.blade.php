@@ -64,6 +64,14 @@
                  */
                 chatConnection.onopen = function () {
                     console.log("Chat connection is open!");
+                    // Send the information of the client user here
+                    chatConnection.send(JSON.stringify({
+                        type: "info",
+                        data: {
+                            room_id: {{ $roomId }},
+                            user_id: {{ auth()->user()->id }},
+                        }
+                    }))
                 }
 
                 /**
@@ -77,7 +85,11 @@
                  * Send the prompt to the websocket server
                  */
                 window.addEventListener('chat-send-message', event => {
-                    console.log(event);
+                    console.log(event.detail);
+                    chatConnection.send(JSON.stringify({
+                        type: "chatMessage",
+                        date: event.detail
+                    }))
                 })
             });
         </script>
